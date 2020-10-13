@@ -35,7 +35,7 @@
             else
             {
                 @* Display Recipe Title *@
-                <h1 class="display-4">@Model.Recipes[Model.Index].Title</h1>
+                <h1 class="display-4">@Model.Recipes[Model.Index].Title: @Model.Recipes[Model.Index].Id</h1>
                 <br />
 
                 <button class="btn btn-dark" type="submit" onclick="location.href='@Url.Action("SeeTitles", "Home")'">
