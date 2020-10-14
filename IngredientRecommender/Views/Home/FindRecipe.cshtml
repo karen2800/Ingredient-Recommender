@@ -48,7 +48,7 @@
 
                 @foreach (IngredientModel Ingredient in Model.search.RecipeChoice.Ingredients)
                 {
-                    <button class="btn btn-light btn-ingr" type="submit" onclick="location.href='@Url.Action("AddIngredient", "Home", new { IngredientName = Ingredient.Name })'">
+                    <button class="btn btn-ingr" type="submit" onclick="location.href='@Url.Action("AddIngredient", "Home", new { IngredientName = Ingredient.Name })'">
                         @Ingredient.Name
                     </button>
                 }
