@@ -10,65 +10,63 @@ namespace IngredientRecommender.Models
         // Recommendations
         public List<RecommendationModel> Recommendations { get; set; }
         // Recipe
-        public RecipeModel Recipe { get; set; }
-
-        private static volatile RecommendationViewModel instance;
-        private static object syncRoot = new Object();
-
-        public static RecommendationViewModel Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    lock (syncRoot)
-                    {
-                        if (instance == null)
-                        {
-                            instance = new RecommendationViewModel();
-                        }
-                    }
-                }
-
-                return instance;
-            }
-        }
+        public RecipeModel MyRecipe { get; set; }
+        public RecipeModel SimilarRecipe { get; set; }
 
         // Constructor
         public RecommendationViewModel()
         {
             Recommendations = new List<RecommendationModel>();
-            Recipe = new RecipeModel();
-        }
-        // Constructor: passing in Recommendations and Recipe
-        public RecommendationViewModel(List<RecommendationModel> Recommendations, RecipeModel Recipe)
-        {
-            this.Recommendations = Recommendations;
-            this.Recipe = Recipe;
+            MyRecipe = new RecipeModel();
+            SimilarRecipe = new RecipeModel();
         }
 
         // Add Ingredient
-        public void AddIngredient(string IngredientName, DataModel dataModel)
+        public void AddIngredient(string IngredientName, DataModel dataModel, bool similar)
         {
-            instance.Recipe.Add(new IngredientModel(IngredientName, dataModel));
+            if (similar == false)
+            {
+                MyRecipe.Add(new IngredientModel(IngredientName, dataModel));
+            } 
+            else
+            {
+                SimilarRecipe.Add(new IngredientModel(IngredientName, dataModel));
+            }
+            
         }
-        public void AddIngredient(IngredientModel Ingredient)
+        public void AddIngredient(IngredientModel Ingredient, bool similar)
         {
-            instance.Recipe.Add(Ingredient);
+            if (similar == false)
+            {
+                MyRecipe.Add(Ingredient);
+            }
+            else
+            {
+                SimilarRecipe.Add(Ingredient);
+            }
         }
         // Remove Ingredient
-        public void RemoveIngredient(string IngredientName, DataModel dataModel)
+        public void RemoveIngredient(string IngredientName, DataModel dataModel, bool similar)
         {
-            instance.Recipe.Remove(new IngredientModel(IngredientName, dataModel));
+            if (similar == false)
+            {
+                MyRecipe.Remove(new IngredientModel(IngredientName, dataModel));
+            }
+            else
+            {
+                SimilarRecipe.Remove(new IngredientModel(IngredientName, dataModel));
+            }
         }
-        public void RemoveIngredient(IngredientModel Ingredient)
+        public void RemoveIngredient(IngredientModel Ingredient, bool similar)
         {
-            instance.Recipe.Remove(Ingredient);
-        }
-        public RecommendationViewModel Reset()
-        {
-            instance = new RecommendationViewModel();
-            return instance;
+            if (similar == false)
+            {
+                MyRecipe.Remove(Ingredient);
+            }
+            else
+            {
+                SimilarRecipe.Remove(Ingredient);
+            }
         }
     }
 }

@@ -86,7 +86,7 @@ namespace IngredientRecommender.Models
                     AllRecipes.Add(Recipe);
 
                     // update current recipe marker
-                    currentRecipeId = item.RecipeId; //Recipe.Id;
+                    currentRecipeId = item.RecipeId;
                     Recipe = new RecipeModel();
                 }
 

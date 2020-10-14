@@ -8,53 +8,23 @@ namespace IngredientRecommender.Models
     public class RecipesViewModel
     {
         // Current Recipe Index
-        public int Index { get; set; }
+        public RecipeModel RecipeChoice { get; set; }
         // Recipes
         public List<RecipeModel> Recipes { get; set; }
-
-        private static volatile RecipesViewModel instance;
-        private static object syncRoot = new Object();
-
-        public static RecipesViewModel Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    lock (syncRoot)
-                    {
-                        if (instance == null)
-                        {
-                            instance = new RecipesViewModel();
-                        }
-                    }
-                }
-
-                return instance;
-            }
-        }
+        // Show Recipe Titles
+        public bool ShowTitles { get; set; }
 
         public RecipesViewModel()
         {
-            Index = -1;
+            RecipeChoice = new RecipeModel();
             Recipes = new List<RecipeModel>();
+            ShowTitles = true;
         }
         public RecipesViewModel(List<RecipeModel> Recipes)
         {
-            Index = -1;
+            RecipeChoice = new RecipeModel();
             this.Recipes = Recipes;
-        }
-        // Update Recipes
-        public List<RecipeModel> UpdateRecipes(List<RecipeModel> Recipes)
-        {
-            instance.Recipes = Recipes;
-            return Recipes;
-        }
-        // Update Index
-        public int UpdateIndex(int Index)
-        {
-            instance.Index = Index;
-            return Index;
+            ShowTitles = true;
         }
     }
 }

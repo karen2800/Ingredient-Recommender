@@ -1,4 +1,4 @@
-﻿@model RecipesViewModel
+﻿@model DisplayViewModel
 @{
     ViewData["Title"] = "Find Recipe";
 }
@@ -11,7 +11,7 @@
     <div class="text-center">
         @if (Model != null)
         {
-            if (Model.Index == -1)
+            if (Model.search.ShowTitles == true)
             {
                 <h1 class="display-4">Find a Recipe</h1>
 
@@ -20,14 +20,16 @@
                 <br />
                 <form asp-controller="Home" asp-action="SearchRecipes" method="post">
                     <input class="input" name="IngredientName" />
-                    <button class="btn btn-outline-dark" type="submit" asp-controller="Home" asp-action="SearchRecipes">Find Recipe</button>
+                    <button class="btn btn-outline-dark" type="submit" asp-controller="Home" asp-action="SearchRecipes">
+                        Find Recipe
+                    </button>
                 </form>
                 <br />
 
-                for (int i = 0; i < Model.Recipes.Count && i < 20; i++)
+                for (int i = 0; i < Model.search.Recipes.Count && i < 20; i++)
                 {
-                    <h5 type="submit" onclick="location.href='@Url.Action("DisplayRecipe", "Home", new { Index = i })'">
-                        @Html.DisplayFor(model => Model.Recipes[i].Title)
+                    <h5 type="submit" onclick="location.href='@Url.Action("DisplayRecipe", "Home", new { Id = Model.search.Recipes[i].Id })'">
+                        @Html.DisplayFor(model => Model.search.Recipes[i].Title)
                     </h5>
                 }
             }
@@ -35,17 +37,17 @@
             else
             {
                 @* Display Recipe Title *@
-                <h1 class="display-4">@Model.Recipes[Model.Index].Title: @Model.Recipes[Model.Index].Id</h1>
+                <h1 class="display-4">@Model.search.RecipeChoice.Title</h1>
                 <br />
 
                 <button class="btn btn-dark" type="submit" onclick="location.href='@Url.Action("SeeTitles", "Home")'">
                     Back
                 </button>
                 <br />
+                <br />
 
-                @foreach (IngredientModel Ingredient in Model.Recipes[Model.Index].Ingredients)
+                @foreach (IngredientModel Ingredient in Model.search.RecipeChoice.Ingredients)
                 {
-                    <br />
                     <button class="btn btn-light btn-ingr" type="submit" onclick="location.href='@Url.Action("AddIngredient", "Home", new { IngredientName = Ingredient.Name })'">
                         @Ingredient.Name
                     </button>

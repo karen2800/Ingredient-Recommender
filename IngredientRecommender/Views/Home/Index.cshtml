@@ -1,4 +1,4 @@
-﻿@model RecommendationViewModel
+﻿@model DisplayViewModel
 @{
     ViewData["Title"] = "Home Page";
     int maxDisplay = 20;
@@ -23,21 +23,22 @@
             <button class="btn btn-outline-dark" type="submit" asp-controller="Home" asp-action="AddIngredient">Add Ingredient</button>
         </form>
         <br />
+        <br />
 
         @* Display My Ingredients *@
-        @if (Model != null && Model.Recipe != null && Model.Recipe.Ingredients.Count > 0)
+        @if (Model != null)
         {
-            <div class="text-left ingr-justify">
-                <h5 >My Recipe</h5>
-                <button type="submit" class="btn btn-dark btn-ingr" onclick="location.href='@Url.Action("Reset", "Home")'">
+            <h5 class="ingr-justify">
+                My Recipe
+                <button type="submit" class="btn btn-outline-dark" style="margin-left: 30px;" onclick="location.href='@Url.Action("ResetMine", "Home")'">
                     Clear
                 </button>
-            </div>
+            </h5>
 
             <div class="ingr-justify">
                 @if (Model != null)
                 {
-                    @foreach (IngredientModel Ingredient in Model.Recipe.Ingredients)
+                    @foreach (IngredientModel Ingredient in Model.mine.MyRecipe.Ingredients)
                     {
                         <button name="IngredientName" type="submit" class="btn btn-light btn-ingr" onclick="location.href='@Url.Action("RemoveIngredient", "Home", new { IngredientName = Ingredient.Name })'">
                             @Html.DisplayFor(model => Ingredient.Name)
@@ -45,21 +46,78 @@
                     }
                 }
             </div>
+            <br />
         }
-        <br />
 
-        @* Display Recommendations *@
-        <h5 class="text-left ingr-justify">Recommendations</h5>
-        <div class="ingr-justify">
-            @if (Model != null)
-            {
-                @for (int i = 0; i < maxDisplay; i++)
+        @* Display My Recipe and My Recommendations *@
+    <div class="row">
+        <div class="col">
+            @* Display Recommendations *@
+            <h5 class="ingr-justify">Recommendations</h5>
+            <div class="ingr-justify">
+                @if (Model != null)
                 {
-                    <button name="IngredientName" type="submit" class="btn btn-light btn-ingr" onclick="location.href='@Url.Action("AddIngredient", "Home", new { IngredientName = Model.Recommendations[i].Ingredient.Name })'">
-                        @Html.DisplayFor(model => Model.Recommendations[i].Ingredient.Name)
-                    </button>
+                    @for (int i = 0; i < maxDisplay; i++)
+                    {
+                        <button name="IngredientName" type="submit" class="btn btn-light btn-ingr" onclick="location.href='@Url.Action("AddIngredient", "Home", new { IngredientName = Model.mine.Recommendations[i].Ingredient.Name })'">
+                            @Html.DisplayFor(model => Model.mine.Recommendations[i].Ingredient.Name)
+                        </button>
+                    }
                 }
-            }
+            </div>
         </div>
+        @if (Model.mine.MyRecipe.Ingredients.Count > 0 || Model.search.RecipeChoice.Ingredients.Count > 0)
+        {
+                @* Display Search Recipe Ingredients *@
+                @if (Model != null)
+                {
+                    @if (Model.mine.MyRecipe.Ingredients.Count > 0)
+                    {
+                        <div class="col">
+                            <h5 class="ingr-justify">
+                                Similar Recipe: @Model.mine.SimilarRecipe.Title
+                                <br />
+                            </h5>
+                            <div class="ingr-justify">
+                                @if (Model != null)
+                                {
+                                    @foreach (IngredientModel Ingredient in Model.mine.SimilarRecipe.Ingredients)
+                                    {
+                                        <button name="IngredientName" type="submit" class="btn btn-light btn-ingr" onclick="location.href='@Url.Action("AddIngredient", "Home", new { IngredientName = Ingredient.Name })'">
+                                            @Html.DisplayFor(model => Ingredient.Name)
+                                        </button>
+                                    }
+                                }
+                            </div>
+                            <br />
+                        </div>
+                    }
+                    @if (Model.search.RecipeChoice.Ingredients.Count > 0)
+                    {
+                        <div class="col">
+                            <h5 class="ingr-justify">
+                                Search Recipe
+                                <button type="submit" class="btn btn-outline-dark" style="margin-left: 30px;" onclick="location.href='@Url.Action("ResetSearch", "Home")'">
+                                    Clear
+                                </button>
+                                <br />
+                            </h5>
+                            <div class="ingr-justify">
+                                @if (Model != null)
+                                {
+                                    @foreach (IngredientModel Ingredient in Model.search.RecipeChoice.Ingredients)
+                                    {
+                                        <button name="IngredientName" type="submit" class="btn btn-light btn-ingr" onclick="location.href='@Url.Action("AddIngredient", "Home", new { IngredientName = Ingredient.Name })'">
+                                            @Html.DisplayFor(model => Ingredient.Name)
+                                        </button>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+        }
+    </div>
+
     </div>
 </body>

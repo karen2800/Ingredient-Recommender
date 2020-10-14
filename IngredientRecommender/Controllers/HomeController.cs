@@ -13,8 +13,7 @@ namespace IngredientRecommender.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private DataModel dataModel = DataModel.Instance;
-        private RecommendationViewModel Display = RecommendationViewModel.Instance;
-        private RecipesViewModel Recipes = RecipesViewModel.Instance;
+        private DisplayViewModel Display = DisplayViewModel.Instance;
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -25,17 +24,17 @@ namespace IngredientRecommender.Controllers
         {
             if (ModelState.IsValid)
             {
-                Display.Recommendations = dataModel.GetRecommendations(Display.Recipe);
+                Display.mine.Recommendations = dataModel.GetRecommendations(Display.mine.MyRecipe);
 
                 // Remove ingredients already in recipe
-                foreach (IngredientModel Ingredient in Display.Recipe.Ingredients)
+                foreach (IngredientModel Ingredient in Display.mine.MyRecipe.Ingredients)
                 {
-                    RecommendationModel toRemove = Display.Recommendations.Where(t => t.Ingredient.Name == Ingredient.Name).FirstOrDefault();
+                    RecommendationModel toRemove = Display.mine.Recommendations.Where(t => t.Ingredient.Name == Ingredient.Name).FirstOrDefault();
                     Ingredient.Score = toRemove.Score;
-                    Display.Recommendations.Remove(toRemove);
+                    Display.mine.Recommendations.Remove(toRemove);
                 }
                 // Sort by Score
-                Display.Recipe.Ingredients = Display.Recipe.Ingredients.OrderByDescending(t => t.Score).ToList();
+                Display.mine.MyRecipe.Ingredients = Display.mine.MyRecipe.Ingredients.OrderByDescending(t => t.Score).ToList();
 
                 return View(Display);
             }
@@ -49,15 +48,15 @@ namespace IngredientRecommender.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (Display.Recipe.Ingredients.Where(t => t.Name == IngredientName).Any())
+                if (Display.mine.MyRecipe.Ingredients.Where(t => t.Name == IngredientName).Any())
                 {
                     // Ingredient is already in Recipe
                 }
                 else
                 {
-                    Display.AddIngredient(IngredientName, dataModel);
+                    Display.mine.AddIngredient(IngredientName, dataModel, false);
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("FindSimilarRecipe");
             }
             else
             {
@@ -69,8 +68,8 @@ namespace IngredientRecommender.Controllers
         {
             if (ModelState.IsValid)
             {
-                Display.RemoveIngredient(IngredientName, dataModel);
-                return RedirectToAction("Index");
+                Display.mine.RemoveIngredient(IngredientName, dataModel, false);
+                return RedirectToAction("FindSimilarRecipe");
             }
             else
             {
@@ -83,7 +82,7 @@ namespace IngredientRecommender.Controllers
         {
             if (ModelState.IsValid)
             {
-                return View(Recipes);
+                return View(Display);
             }
             else
             {
@@ -95,7 +94,7 @@ namespace IngredientRecommender.Controllers
             if (ModelState.IsValid)
             {
                 List<RecipeModel> recipes = dataModel.GetRecipesByIngr(IngredientName);
-                Recipes.UpdateRecipes(recipes);
+                Display.search.Recipes = recipes;
                 return RedirectToAction("FindRecipe");
             }
             else
@@ -103,11 +102,16 @@ namespace IngredientRecommender.Controllers
                 return RedirectToAction("Error");
             }
         }
-        public IActionResult DisplayRecipe(int Index)
+        public IActionResult DisplayRecipe(int Id)
         {
             if (ModelState.IsValid)
             {
-                Recipes.UpdateIndex(Index);
+                RecipeModel found = Display.search.Recipes.Where(t => t.Id == Id).FirstOrDefault();
+                if (found != null)
+                {
+                    Display.search.RecipeChoice = found;
+                    Display.search.ShowTitles = false;
+                }
                 return RedirectToAction("FindRecipe");
             }
             else
@@ -118,13 +122,52 @@ namespace IngredientRecommender.Controllers
         // Go back to recipe titles
         public IActionResult SeeTitles()
         {
-            Recipes.UpdateIndex(-1);
+            Display.search.ShowTitles = true;
             return RedirectToAction("FindRecipe");
         }
+        public IActionResult FindSimilarRecipe()
+        {
+            if (Display.mine.MyRecipe.Ingredients.Count > 0)
+            {
+                int maxCount = 0;
+                foreach (RecipeModel Recipe in dataModel.AllRecipes)
+                {
+                    int count = 0;
+                    foreach (IngredientModel Ingredient in Display.mine.MyRecipe.Ingredients)
+                    {
+                        var found = Recipe.Ingredients.Where(t => t.Name == Ingredient.Name).FirstOrDefault();
+                        if (found != null)
+                        {
+                            count++;
+                        }
+                    }
+                    if (count > maxCount)
+                    {
+                        Display.mine.SimilarRecipe = Recipe;
+                        maxCount = count;
+                        if (maxCount == Display.mine.MyRecipe.Ingredients.Count)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
 
+            return RedirectToAction("Index");
+        }
+        public IActionResult ResetMine()
+        {
+            Display.ResetMine();
+            return RedirectToAction("FindSimilarRecipe");
+        }
+        public IActionResult ResetSearch()
+        {
+            Display.ResetSearch();
+            return RedirectToAction("Index");
+        }
         public IActionResult Reset()
         {
-            Display = Display.Reset();
+            Display.Reset();
             return RedirectToAction("Index");
         }
 
