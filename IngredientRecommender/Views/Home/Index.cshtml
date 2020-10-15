@@ -12,14 +12,14 @@
 
 <body class="background">
     <div class="text-center">
-        <h3 class="display-4">Build Your Recipe</h3>
-        <p>Get recommendations for which ingredients to add to or remove from your recipe.</p>
+        <h3 class="display-4 text-white ingr-justify">Build Your Recipe</h3>
+        <p class="text-white ingr-justify">Get recommendations for which ingredients to add to or remove from your recipe.</p>
 
         @* Type in Ingredient to Add *@
         <br />
         <form asp-controller="Home" asp-action="AddIngredient" method="post">
             <input class="input" name="IngredientName" />
-            <button class="btn btn-outline-dark" type="submit" asp-controller="Home" asp-action="AddIngredient">Add Ingredient to Your Recipe</button>
+            <button class="btn btn-dark" type="submit" asp-controller="Home" asp-action="AddIngredient">Add</button>
         </form>
         <br />
         <br />
@@ -27,10 +27,10 @@
         @* Display My Ingredients *@
         @if (Model.mine.MyRecipe.Ingredients.Count > 0)
         {
-            <h5 class="ingr-justify">
-                My Recipe
+            <h2 class="ingr-justify text-white display-4" style="font-size: 40px;">
+                My Ingredients
                 <br />
-            </h5>
+            </h2>
 
             <div class="ingr-justify">
                     @foreach (IngredientModel Ingredient in Model.mine.MyRecipe.Ingredients)
@@ -40,7 +40,7 @@
                         </button>
                     }
             </div>
-            <button type="submit" class="btn btn-outline-dark" style="margin-top: 10px; margin-bottom: 20px;" onclick="location.href='@Url.Action("ResetMine", "Home")'">
+            <button type="submit" class="btn btn-dark" style="margin-top: 10px; margin-bottom: 20px;" onclick="location.href='@Url.Action("ResetMine", "Home")'">
                 Clear
             </button>
             <br />
@@ -50,13 +50,13 @@
         <div class="row">
             <div class="col">
                 @* Display Recommendations *@
-                <h5 class="ingr-justify">Recommendations</h5>
+                <h1 class="ingr-justify text-white display-4" style="font-size: 40px;">Recommendations</h1>
                 <div class="ingr-justify">
                     @if (Model != null)
                     {
                         @for (int i = 0; i < maxDisplay; i++)
                         {
-                            <button name="IngredientName" type="submit" class="btn btn-ingr" onclick="location.href='@Url.Action("AddIngredient", "Home", new { IngredientName = Model.mine.Recommendations[i].Ingredient.Name })'">
+                            <button name="IngredientName" type="submit" class="btn btn-dark btn-ingr" onclick="location.href='@Url.Action("AddIngredient", "Home", new { IngredientName = Model.mine.Recommendations[i].Ingredient.Name })'">
                                 @Html.DisplayFor(model => Model.mine.Recommendations[i].Ingredient.Name)
                             </button>
                         }
@@ -65,16 +65,16 @@
             </div>
             @if (Model.mine.MyRecipe.Ingredients.Count > 0 || Model.search.RecipeChoice.Ingredients.Count > 0)
             {
-                @* Display Search Recipe Ingredients *@
+                @* Display Similar Recipe Ingredients *@
                 @if (Model != null)
                 {
                     @if (Model.mine.MyRecipe.Ingredients.Count > 0)
                     {
                         <div class="col">
-                            <h5 class="ingr-justify">
-                                Similar Recipe: @Model.mine.SimilarRecipe.Title
-                                <br />
-                            </h5>
+                            <h1 class="ingr-justify text-white display-4" style="font-size: 40px;">
+                                Similar Recipe
+                            </h1>
+                            <p class="text-white ingr-justify">@Model.mine.SimilarRecipe.Title</p>
                             <div class="ingr-justify">
                                 @if (Model != null)
                                 {
@@ -92,9 +92,8 @@
                     @if (Model.search.RecipeChoice.Ingredients.Count > 0)
                     {
         <div class="col">
-            <h5 class="ingr-justify">
+            <h5 class="ingr-justify text-white display-4" style="font-size: 40px;">
                 Search Recipe
-                <br />
             </h5>
             <div class="ingr-justify">
                 @if (Model != null)
@@ -107,7 +106,7 @@
                     }
                 }
             </div>
-            <button type="submit" class="btn btn-outline-dark" style="margin-top: 10px;" onclick="location.href='@Url.Action("ResetSearch", "Home")'">
+            <button type="submit" class="btn btn-dark" style="margin-top: 10px;" onclick="location.href='@Url.Action("ResetSearch", "Home")'">
                 Clear
             </button>
         </div>

@@ -13,14 +13,14 @@
         {
             if (Model.search.ShowTitles == true)
             {
-                <h1 class="display-4">Find a Recipe</h1>
+                <h1 class="display-4 text-white ingr-justify">Find a Recipe</h1>
 
                 @* Type in Ingredient to Add *@
-                <h3>Type in an ingredient</h3>
+                <h3 class="light-shadow">Type in an ingredient</h3>
                 <br />
                 <form asp-controller="Home" asp-action="SearchRecipes" method="post">
                     <input class="input" name="IngredientName" />
-                    <button class="btn btn-outline-dark" type="submit" asp-controller="Home" asp-action="SearchRecipes">
+                    <button class="btn btn-dark" type="submit" asp-controller="Home" asp-action="SearchRecipes">
                         Find Recipe
                     </button>
                 </form>
@@ -28,7 +28,7 @@
 
                 for (int i = 0; i < Model.search.Recipes.Count && i < 20; i++)
                 {
-                    <h5 type="submit" onclick="location.href='@Url.Action("DisplayRecipe", "Home", new { Id = Model.search.Recipes[i].Id })'">
+                    <h5 type="submit" class="light-shadow" onclick="location.href='@Url.Action("DisplayRecipe", "Home", new { Id = Model.search.Recipes[i].Id })'">
                         @Html.DisplayFor(model => Model.search.Recipes[i].Title)
                     </h5>
                 }
@@ -37,7 +37,7 @@
             else
             {
                 @* Display Recipe Title *@
-                <h1 class="display-4">@Model.search.RecipeChoice.Title</h1>
+                <h1 class="display-4 text-white ingr-justify">@Model.search.RecipeChoice.Title</h1>
                 <br />
 
                 <button class="btn btn-dark" type="submit" onclick="location.href='@Url.Action("SeeTitles", "Home")'">
