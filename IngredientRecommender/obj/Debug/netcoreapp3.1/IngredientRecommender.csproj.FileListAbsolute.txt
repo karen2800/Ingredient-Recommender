@@ -1,6 +1,5 @@
 C:\Users\karen\source\repos\Ingredient-Recommender-WebApp\IngredientRecommender\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\Users\karen\source\repos\Ingredient-Recommender-WebApp\IngredientRecommender\bin\Debug\netcoreapp3.1\appsettings.json
-C:\Users\karen\source\repos\Ingredient-Recommender-WebApp\IngredientRecommender\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 C:\Users\karen\source\repos\Ingredient-Recommender-WebApp\IngredientRecommender\bin\Debug\netcoreapp3.1\IngredientRecommender.exe
 C:\Users\karen\source\repos\Ingredient-Recommender-WebApp\IngredientRecommender\bin\Debug\netcoreapp3.1\IngredientRecommender.deps.json
 C:\Users\karen\source\repos\Ingredient-Recommender-WebApp\IngredientRecommender\bin\Debug\netcoreapp3.1\IngredientRecommender.runtimeconfig.json
@@ -35,3 +34,4 @@ C:\Users\karen\source\repos\Ingredient-Recommender-WebApp\IngredientRecommender\
 C:\Users\karen\source\repos\Ingredient-Recommender-WebApp\IngredientRecommender\obj\Debug\netcoreapp3.1\IngredientRecommender.csproj.CopyComplete
 C:\Users\karen\source\repos\Ingredient-Recommender-WebApp\IngredientRecommender\obj\Debug\netcoreapp3.1\Razor\Views\Home\FindRecipe.cshtml.g.cs
 C:\Users\karen\source\repos\Ingredient-Recommender-WebApp\IngredientRecommender\obj\Debug\netcoreapp3.1\IngredientRecommender.csprojAssemblyReference.cache
+C:\Users\karen\Source\Repos\Ingredient-Recommender-WebApp\IngredientRecommender\obj\Debug\netcoreapp3.1\scopedcss\bundle\IngredientRecommender.styles.css

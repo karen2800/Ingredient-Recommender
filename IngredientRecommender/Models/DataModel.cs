@@ -16,7 +16,7 @@ namespace IngredientRecommender.Models
         // Co-occurrence Matrix of Ingredients
         private Dictionary<(int, int), int> CoOccurrences;
         // Data Path
-        private const string PATH = "C:\\Users\\karen\\source\\repos\\Ingredient-Recommender-WebApp\\IngredientRecommender\\Data\\AllRecipes-cleaned.csv";
+        private string PATH = Directory.GetCurrentDirectory() + "\\Data\\AllRecipes-cleaned.csv";
 
         private static volatile DataModel instance;
         private static object syncRoot = new Object();
